@@ -27,9 +27,10 @@ public class presentation extends AppCompatActivity {
             }
         });
         Context context = getApplicationContext();
-        Intent intent = null;
-        if(isAuth() == true)
+        Intent intent;
+        if(isAuth()) {
             intent = new Intent(context, home.class);
+        }
         else
             intent = new Intent(context, start.class);
         startActivityForResult(intent, 1);
@@ -39,14 +40,20 @@ public class presentation extends AppCompatActivity {
     {
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
         int ID = sharedPreferences.getInt("ID", -1);
-        if(ID == -1)
-            return false;
-        return true;
+        return ID != -1;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        
+        switch (requestCode) {
+            case 1: {
+                Log.d(TAG, resultCode + "");
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     protected String TAG = "LIFECYCLE";

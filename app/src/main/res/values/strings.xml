@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TC Mobile</string>
+    <string name="welcomeTitle">Добро Пожаловать\nв Total Control</string>
+    <string name="loginTitle">Логин</string>
+    <string name="passwordTitle">Пароль</string>
+    <string name="goBtnTitle">Войти</string>
+    <string name="help">Помощь</string>
+    <string name="firstMidlename">Имя Фамилия</string>
+
+</resources>

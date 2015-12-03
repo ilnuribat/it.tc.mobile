@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".start">
+
+    <Button
+        android:id="@+id/auth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/passwordText"
+        android:layout_alignLeft="@+id/passwordText"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/passwordText"
+        android:layout_alignStart="@+id/passwordText"
+        android:text="@string/goBtnTitle" />
+
+    <EditText
+        android:id="@+id/loginText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/passwordText"
+        android:layout_alignEnd="@+id/passwordText"
+        android:layout_alignLeft="@+id/passwordText"
+        android:layout_alignRight="@+id/passwordText"
+        android:layout_alignStart="@+id/passwordText"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:hint="@string/loginTitle"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/passwordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/auth"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:ems="10"
+        android:hint="@string/passwordTitle"
+        android:inputType="textPassword"
+        android:password="false"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/welcomeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="88dp"
+        android:text="@string/welcomeTitle"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="35sp" />
+
+</RelativeLayout>

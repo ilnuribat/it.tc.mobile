@@ -8,6 +8,13 @@
 # Java class files
 *.class
 
+# IDE folders
+.idea/
+.navigation/
+it.tc.mobile.iml
+
+
+
 # Generated files
 bin/
 gen/

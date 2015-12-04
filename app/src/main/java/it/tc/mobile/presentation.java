@@ -30,14 +30,16 @@ public class presentation extends AppCompatActivity {
         Intent intent;
         if(isAuth()) {
             intent = new Intent(context, home.class);
+            startActivityForResult(intent, 2);
         }
-        else
+        else {
             intent = new Intent(context, start.class);
-        startActivityForResult(intent, 1);
+            startActivityForResult(intent, 1);
+        }
+
     }
 
-    protected boolean isAuth()
-    {
+    protected boolean isAuth() {
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
         int ID = sharedPreferences.getInt("ID", -1);
         return ID != -1;
@@ -47,7 +49,21 @@ public class presentation extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case 1: {
-                Log.d(TAG, resultCode + "");
+                String resultStr = data.getStringExtra("result");
+                if(resultStr.equals("exit")) {
+                    Log.d(TAG, "exit");
+                    finish();
+                }
+                Log.d(TAG, requestCode + " - request Code, " + resultCode + " - resultCode, " + data.getStringExtra("result"));
+                break;
+            }
+            case 2: {
+                String resultStr = data.getStringExtra("result");
+                if(resultStr.equals("exit")) {
+                    Log.d(TAG, "exit");
+                    finish();
+                }
+                Log.d(TAG, requestCode + " - request Code, " + resultCode + " - resultCode, " + data.getStringExtra("result"));
                 break;
             }
             default: {

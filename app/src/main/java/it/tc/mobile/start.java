@@ -47,7 +47,7 @@ public class start extends AppCompatActivity {
 
     }
 
-    public static final String md5(final String s) {
+    public static String md5(final String s) {
         try {
             // Create MD5 Hash
             MessageDigest digest = java.security.MessageDigest
@@ -119,6 +119,16 @@ public class start extends AppCompatActivity {
         startActivityForResult(intent, 2);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(data.getStringExtra("result").equals("exit")) {
+            Intent intent = new Intent();
+            intent.putExtra("result", "exit");
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+    }
+
     protected void errorLogin(String errorDescription) {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -131,13 +141,11 @@ public class start extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         Log.d("LOG", "back Button clicked");
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, "back Button", duration);
-        toast.show();
-        super.onBackPressed();
+        Intent intent = new Intent();
+        intent.putExtra("result", "exit");
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

@@ -8,8 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -21,16 +24,10 @@ public class home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
-        Button btn = (Button) findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
-                String firstMiddlename = sharedPref.getString("settings", "");
-                TextView def = (TextView) findViewById(R.id.def);
-                def.setText(firstMiddlename);
-            }
-        });
+        Spinner spinner = (Spinner) findViewById(R.id.discpline);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.disciplines, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     @Override
@@ -49,4 +46,31 @@ public class home extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item) {
+        Log.d("HOME_PAGE", "Menu item is selected");
+        switch (item.getItemId()) {
+            case R.id.logOut: {
+                clearSettings();
+                Intent intent = new Intent();
+                intent.putExtra("result", "goToStart");
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+            case R.id.firstMidlename: {
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        return true;
+    }
+
+    protected void clearSettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+    }
 }

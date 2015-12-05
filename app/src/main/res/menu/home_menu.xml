@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/firstMidlename"
         android:title="@string/firstMidlename" />
-    <item android:id="@+id/help"
-        android:title="@string/help" />
+    <item android:id="@+id/logOut"
+        android:title="@string/logOut" />
 </menu>

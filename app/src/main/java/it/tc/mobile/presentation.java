@@ -26,50 +26,60 @@ public class presentation extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Context context = getApplicationContext();
-        Intent intent;
-        if(isAuth()) {
-            intent = new Intent(context, home.class);
-            startActivityForResult(intent, 2);
-        }
-        else {
-            intent = new Intent(context, start.class);
-            startActivityForResult(intent, 1);
-        }
+
+        if (isAuth())
+            goHomePage();
+        else
+            goStartPage();
+
 
     }
 
     protected boolean isAuth() {
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
         int ID = sharedPreferences.getInt("ID", -1);
+        Log.d(TAG, ID + " - ID of user from settings");
         return ID != -1;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, requestCode + " - request Code, " + resultCode + " - resultCode, " + data.getStringExtra("result"));
         switch (requestCode) {
             case 1: {
                 String resultStr = data.getStringExtra("result");
-                if(resultStr.equals("exit")) {
-                    Log.d(TAG, "exit");
+                if (resultStr.equals("exit")) {
+
                     finish();
-                }
-                Log.d(TAG, requestCode + " - request Code, " + resultCode + " - resultCode, " + data.getStringExtra("result"));
+                } else
+                if (resultStr.equals("successLogin"))
+                    goHomePage();
                 break;
             }
             case 2: {
                 String resultStr = data.getStringExtra("result");
-                if(resultStr.equals("exit")) {
-                    Log.d(TAG, "exit");
+                if (resultStr.equals("exit"))
                     finish();
-                }
-                Log.d(TAG, requestCode + " - request Code, " + resultCode + " - resultCode, " + data.getStringExtra("result"));
+                else if (resultStr.equals("goToStart"))
+                    goStartPage();
                 break;
             }
             default: {
                 break;
             }
         }
+    }
+
+    protected void goStartPage() {
+        Context context = getApplicationContext();
+        Intent intent = new Intent(context, start.class);
+        startActivityForResult(intent, 1);
+    }
+
+    protected void goHomePage() {
+        Context context = getApplicationContext();
+        Intent intent = new Intent(context, home.class);
+        startActivityForResult(intent, 2);
     }
 
     protected String TAG = "LIFECYCLE";
@@ -103,5 +113,4 @@ public class presentation extends AppCompatActivity {
         super.onDestroy();
         Log.d(TAG, "presentaion: onDestroy()");
     }
-
 }

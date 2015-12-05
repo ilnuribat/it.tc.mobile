@@ -4,7 +4,18 @@
     <string name="loginTitle">Логин</string>
     <string name="passwordTitle">Пароль</string>
     <string name="goBtnTitle">Войти</string>
-    <string name="help">Помощь</string>
+    <string name="logOut">Сменить пользователя</string>
     <string name="firstMidlename">Имя Фамилия</string>
-
+    <string name="homePageTitle">Домашняя страница</string>
+    <string name="chooseDiscipline">Выберите дисцпиплину</string>
+    <string-array name="disciplines">
+        <item>Зарядка</item>
+        <item>Чистота комнат утром</item>
+        <item>Опаздания</item>
+        <item>Внешний вид</item>
+        <item>Сампод</item>
+        <item>Чистота территории</item>
+        <item>Читота комнат вечером</item>
+        <item>Вечерняя проверка</item>
+    </string-array>
 </resources>

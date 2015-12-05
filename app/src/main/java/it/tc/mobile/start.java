@@ -114,9 +114,10 @@ public class start extends AppCompatActivity {
         editor.putInt("ID", ID);
         editor.commit();
 
-        Context context = getApplicationContext();
-        Intent intent = new Intent(context, home.class);
-        startActivityForResult(intent, 2);
+        Intent intent = new Intent();
+        intent.putExtra("result", "successLogin");
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override

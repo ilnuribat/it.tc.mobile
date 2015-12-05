@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="7">
     <TextView
-        android:id="@+id/def"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Default"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="46dp" />
-
-    <Button
-        android:layout_width="wrap_content"
+        android:layout_weight="2"
+        android:text="@string/homePageTitle"
+        android:gravity="center"
+        android:textSize="30sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home Page"
-        android:id="@+id/button"
-        android:layout_below="@+id/def"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="84dp" />
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/chooseDiscipline"
+            android:gravity="center|start"
+            android:layout_weight="1"/>
 
-</RelativeLayout>
+        <Spinner
+            android:id="@+id/discpline"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -14,6 +14,7 @@ import java.net.URL;
  * Created by itibatullin on 20.11.2015.
  */
 class AsyncHttp extends AsyncTask<String, Void, String> {
+    private String API_KEY = "&apikey=6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b";
     @Override
     protected String doInBackground(String... urls) {
 
@@ -22,11 +23,11 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
             String method = urls[0];
             String url = urls[1];
             if (method == "GET")
-                return downloadUrlGET(url);
+                return downloadUrlGET(url + API_KEY);
                 //POST METHOD
             else {
                 String data = urls[2];
-                return downloadUrlPOST(url, data);
+                return downloadUrlPOST(url, data + API_KEY);
 
             }
     }

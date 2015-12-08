@@ -17,7 +17,8 @@ public class presentation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.presentation);
-        Log.d(TAG, "presentation onCreate()");
+        Log.d(TAG, "presentation: >>");
+
         Button btn = (Button) findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,8 +32,6 @@ public class presentation extends AppCompatActivity {
             goHomePage();
         else
             goStartPage();
-
-
     }
 
     protected boolean isAuth() {
@@ -87,30 +86,30 @@ public class presentation extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "presentaion: onStart()");
+        Log.d(TAG, "presentaion: >> >>");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "presentaion: onResume()");
+        Log.d(TAG, "presentaion: >> >> >>");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "presentaion: onPause()");
+        Log.d(TAG, "presentaion: << << <<");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "presentaion: onStop()");
+        Log.d(TAG, "presentaion: << <<");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "presentaion: onDestroy()");
+        Log.d(TAG, "presentaion: <<");
     }
 }

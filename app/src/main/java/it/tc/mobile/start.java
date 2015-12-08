@@ -22,11 +22,13 @@ import java.security.NoSuchAlgorithmException;
 
 public class start extends AppCompatActivity {
 
-    String TAG_HTTP = "HTTP";
+    protected String TAG = "LIFECYCLE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        Log.d(TAG, "_______start: >>");
         Button btn = (Button) findViewById(R.id.auth);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +90,7 @@ public class start extends AppCompatActivity {
             }
         }
     }
+
     protected void successLogin(JSONObject json) {
         String firstMiddleName = null;
         String position = null;
@@ -148,5 +151,11 @@ public class start extends AppCompatActivity {
         intent.putExtra("result", "exit");
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "_______start: <<");
     }
 }

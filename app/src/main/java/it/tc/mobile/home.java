@@ -15,18 +15,30 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+
 /**
  * Created by itibatullin on 23.11.2015.
  */
 public class home extends AppCompatActivity {
+
+    JSONArray disciplines;
+    JSONArray classes;
+    protected String TAG = "LIFECYCLE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        initViews();
+        Log.d(TAG, "________home: >>");
+    }
 
+    protected void initViews() {
         Spinner spinner = (Spinner) findViewById(R.id.discpline);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.disciplines, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinner.setAdapter(adapter);
     }
 
@@ -37,7 +49,6 @@ public class home extends AppCompatActivity {
         setResult(RESULT_OK, intent);
         finish();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,5 +83,12 @@ public class home extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "________home: <<");
+        //          presentation
     }
 }

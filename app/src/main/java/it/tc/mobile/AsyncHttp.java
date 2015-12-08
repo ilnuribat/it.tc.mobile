@@ -19,15 +19,16 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
 
         // params comes from the execute() call: params[0] is the url.
 
-            String method = urls[0];
-            String url = urls[1];
+        String method = urls[0];
+        String url = urls[1];
         String API_KEY = "&apikey=6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b";
+        String IP = "http://52.27.138.37:8080";
         if (method.equals("GET"))
-                return downloadUrlGET(url + API_KEY);
+                return downloadUrlGET(IP + url + API_KEY);
                 //POST METHOD
             else {
                 String data = urls[2];
-                return downloadUrlPOST(url, data + API_KEY);
+                return downloadUrlPOST(IP + url, data + API_KEY);
 
             }
     }

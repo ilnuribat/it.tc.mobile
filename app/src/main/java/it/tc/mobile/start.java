@@ -38,8 +38,7 @@ public class start extends AppCompatActivity {
                 String loginTxt = login.getText().toString();
                 String md5Password = md5(password.getText().toString());
 
-                new AsyncHttpP().execute("POST", "http://52.27.138.37:8080/auth",
-                        "apikey=6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b" +
+                new AsyncHttpP().execute("POST", "/auth",
                                 "&login=" + loginTxt +
                                 "&password=" + md5Password +
                                 "&method=login");

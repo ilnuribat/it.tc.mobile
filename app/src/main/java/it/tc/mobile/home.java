@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by itibatullin on 23.11.2015.
  */
@@ -38,8 +40,15 @@ public class home extends AppCompatActivity {
 
     protected void initViews() {
         Spinner spinner = (Spinner) findViewById(R.id.discpline);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.disciplines, android.R.layout.simple_spinner_item);
+        ArrayList<String> dists = new ArrayList<String>();
+        for(int i = 0; i < disciplines.length(); i ++) {
+            try {
+                JSONObject oneDis = disciplines.getJSONObject(i);
+                String disStr = oneDis.getString("name");
+                dists.add(disStr);
+            } catch (JSONException ignored) {}
+        }
+        ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dists);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }
@@ -53,7 +62,7 @@ public class home extends AppCompatActivity {
             //no token, no ID -> go to start page
             goToStartPage();
         }
-        String method = "/subjects/?";
+        String method = "/subjects?";
         new AsyncHttpGetDiscipline().execute("GET", method + "id_staff=" + ID + "&token=" + token);
     }
 
@@ -63,11 +72,20 @@ public class home extends AppCompatActivity {
             Log.d("TAG_HTTP", result);
             try {
                 disciplines = new JSONArray(result);
+                moveToSharedPreferences(result);
                 initViews();
             } catch (JSONException e) {
+                e.getStackTrace();
                 //Couldn't parse JSON
             }
         }
+    }
+
+    protected void moveToSharedPreferences(String str) {
+        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("disciplines", str);
+        editor.commit();
     }
 
     @Override

@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by itibatullin on 23.11.2015.
@@ -29,7 +31,8 @@ public class home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        initViews();
+
+        getDisciplines();
         Log.d(TAG, "________home: >>");
     }
 
@@ -38,8 +41,33 @@ public class home extends AppCompatActivity {
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.disciplines, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spinner.setAdapter(adapter);
+    }
+
+    protected void getDisciplines() {
+        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
+        int ID = sharedPreferences.getInt("ID", -1);
+
+        if (token.equals("") || ID == -1) {
+            //no token, no ID -> go to start page
+            goToStartPage();
+        }
+        String method = "/subjects/?";
+        new AsyncHttpGetDiscipline().execute("GET", method + "id_staff=" + ID + "&token=" + token);
+    }
+
+    class AsyncHttpGetDiscipline extends AsyncHttp {
+        @Override
+        protected void onPostExecute(String result) {
+            Log.d("TAG_HTTP", result);
+            try {
+                disciplines = new JSONArray(result);
+                initViews();
+            } catch (JSONException e) {
+                //Couldn't parse JSON
+            }
+        }
     }
 
     @Override
@@ -63,10 +91,7 @@ public class home extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.logOut: {
                 clearSettings();
-                Intent intent = new Intent();
-                intent.putExtra("result", "goToStart");
-                setResult(RESULT_OK, intent);
-                finish();
+                goToStartPage();
             }
             case R.id.firstMidlename: {
                 break;
@@ -76,6 +101,13 @@ public class home extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    protected void goToStartPage() {
+        Intent intent = new Intent();
+        intent.putExtra("result", "goToStart");
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     protected void clearSettings() {

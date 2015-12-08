@@ -14,7 +14,6 @@ import java.net.URL;
  * Created by itibatullin on 20.11.2015.
  */
 class AsyncHttp extends AsyncTask<String, Void, String> {
-    private String API_KEY = "&apikey=6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b";
     @Override
     protected String doInBackground(String... urls) {
 
@@ -22,7 +21,8 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
 
             String method = urls[0];
             String url = urls[1];
-            if (method == "GET")
+        String API_KEY = "&apikey=6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b";
+        if (method.equals("GET"))
                 return downloadUrlGET(url + API_KEY);
                 //POST METHOD
             else {
@@ -60,17 +60,16 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
             is = conn.getInputStream();
 
             // Convert the InputStream into a string
-            String answer = IOUtils.toString(is, "UTF-8");
-            return answer;
+            return IOUtils.toString(is, "UTF-8");
 
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
         }
         catch (IOException e) {
+            assert ((HttpURLConnection) conn) != null;
             is = ((HttpURLConnection) conn).getErrorStream();
             try {
-                String answer = IOUtils.toString(is, "UTF-8");
-                return answer;
+                return IOUtils.toString(is, "UTF-8");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -83,6 +82,7 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
                     e.printStackTrace();
                 }
             }
+            assert conn != null;
             conn.disconnect();
         }
         return "";
@@ -115,10 +115,10 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
         } catch (IOException e) {
+            assert ((HttpURLConnection) conn) != null;
             is = ((HttpURLConnection) conn).getErrorStream();
             try {
-                String answer = IOUtils.toString(is, "UTF-8");
-                return answer;
+                return IOUtils.toString(is, "UTF-8");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -131,6 +131,7 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
                     e.printStackTrace();
                 }
             }
+            assert conn != null;
             conn.disconnect();
         }
         return "";

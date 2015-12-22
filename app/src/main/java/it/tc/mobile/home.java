@@ -33,12 +33,15 @@ public class home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        disciplines = null;
+        classes = null;
 
         getDisciplines();
+        getClasses();
         Log.d(TAG, "________home: >>");
     }
 
-    protected void initViews() {
+    protected void initDisciplines() {
         Spinner spinner = (Spinner) findViewById(R.id.discpline);
         ArrayList<String> dists = new ArrayList<String>();
         for(int i = 0; i < disciplines.length(); i ++) {
@@ -53,27 +56,56 @@ public class home extends AppCompatActivity {
         spinner.setAdapter(adapter);
     }
 
-    protected void getDisciplines() {
-        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", "");
-        int ID = sharedPreferences.getInt("ID", -1);
-
-        if (token.equals("") || ID == -1) {
-            //no token, no ID -> go to start page
-            goToStartPage();
+    protected void initClasses() {
+        Spinner spinner = (Spinner) findViewById(R.id.classes);
+        ArrayList<String> classArray = new ArrayList<String>();
+        for(int i = 0; i < classes.length(); i ++) {
+            try {
+                JSONObject oneClass = classes.getJSONObject(i);
+                String classStr = oneClass.getString("name");
+                classArray.add(classStr);
+            } catch (JSONException ignored) {}
         }
-        String method = "/subjects?";
-        new AsyncHttpGetDiscipline().execute("GET", method + "id_staff=" + ID + "&token=" + token);
+        ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, classArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
-    class AsyncHttpGetDiscipline extends AsyncHttp {
+    protected int getStaffID() {
+        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+        int ID = sharedPreferences.getInt("ID", -1);
+
+        if (ID == -1) {
+            //no ID -> go to start page
+            goToStartPage();
+        }
+
+        return ID;
+    }
+
+    protected String getToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
+        if (token.equals("")) {
+            //no token -> go to Start page
+            goToStartPage();
+        }
+        return token;
+    }
+
+    protected void getClasses() {
+        String method = "/classes?";
+        new AsyncHttpGetClasses().execute("GET", method + "id_staff=" + getStaffID() + "&token=" + getToken());
+    }
+
+    class AsyncHttpGetClasses extends AsyncHttp {
         @Override
         protected void onPostExecute(String result) {
             Log.d("TAG_HTTP", result);
             try {
-                disciplines = new JSONArray(result);
-                moveToSharedPreferences(result);
-                initViews();
+                classes = new JSONArray(result);
+                moveToSharedPreferences("classes", result);
+                initClasses();
             } catch (JSONException e) {
                 e.getStackTrace();
                 //Couldn't parse JSON
@@ -81,10 +113,29 @@ public class home extends AppCompatActivity {
         }
     }
 
-    protected void moveToSharedPreferences(String str) {
+    protected void getDisciplines() {
+        String method = "/subjects?";
+        new AsyncHttpGetDiscipline().execute("GET", method + "id_staff=" + getStaffID() + "&token=" + getToken());
+    }
+
+    class AsyncHttpGetDiscipline extends AsyncHttp {
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                disciplines = new JSONArray(result);
+                moveToSharedPreferences("disciplines", result);
+                initDisciplines();
+            } catch (JSONException e) {
+                e.getStackTrace();
+                //Couldn't parse JSON
+            }
+        }
+    }
+
+    protected void moveToSharedPreferences(String key, String value) {
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("disciplines", str);
+        editor.putString(key, value);
         editor.commit();
     }
 

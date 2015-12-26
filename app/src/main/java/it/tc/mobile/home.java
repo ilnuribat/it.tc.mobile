@@ -34,8 +34,10 @@ public class home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        disciplines = null;
-        classes = null;
+        try {
+            disciplines = new JSONArray("[]");
+            classes = new JSONArray("[]"); } catch (JSONException ignored) {}
+
 
         getDisciplines();
         getClasses();
@@ -221,9 +223,6 @@ public class home extends AppCompatActivity {
             case R.id.logOut: {
                 clearSettings();
                 goToStartPage();
-            }
-            case R.id.firstMidlename: {
-                break;
             }
             default: {
                 break;

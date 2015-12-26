@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -54,6 +55,31 @@ public class home extends AppCompatActivity {
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dists);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+                String lastSettings = sharedPreferences.getString("localSettings", "{}");
+                Log.d("spinner", lastSettings);
+                //Сохраняем выбранный класс в настройках
+                try {
+                    //вытаскиваем предыдущие сохраненные данные, поверх записываем новые
+                    JSONObject selectedClass = new JSONObject(lastSettings);
+                    selectedClass.put("lastDiscipline", position);
+                    moveToSharedPreferences("localSettings", selectedClass.toString());
+                } catch (JSONException ignored) {
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        if (classes.length() > 0) {
+            initGoButton();
+        }
     }
 
     protected void initClasses() {
@@ -69,6 +95,40 @@ public class home extends AppCompatActivity {
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, classArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+                String lastSettings = sharedPreferences.getString("localSettings", "{}");
+                Log.d("spinner", lastSettings);
+                //Сохраняем выбранный класс в настройках
+                try {
+                    //вытаскиваем предыдущие сохраненные данные, поверх записываем новые
+                    JSONObject selectedClass = new JSONObject(lastSettings);
+                    selectedClass.put("lastClass", position);
+                    moveToSharedPreferences("localSettings", selectedClass.toString());
+                } catch (JSONException ignored) {}
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        }) ;
+        if (disciplines.length() > 0) {
+            initGoButton();
+        }
+    }
+
+    protected void initGoButton() {
+        Button goListPage = (Button) findViewById(R.id.goListPage);
+        goListPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     protected int getStaffID() {
@@ -136,7 +196,7 @@ public class home extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     @Override

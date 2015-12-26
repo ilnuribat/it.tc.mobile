@@ -61,7 +61,7 @@
         android:layout_width="fill_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_height="30dp"
+        android:layout_height="15dp"
         android:layout_weight="1"
 
         android:text="@string/markingBtnTitle"

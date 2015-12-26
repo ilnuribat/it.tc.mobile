@@ -57,6 +57,7 @@ public class home extends AppCompatActivity {
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dists);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setSelection(getLastDiscipline());
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -97,6 +98,7 @@ public class home extends AppCompatActivity {
         ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, classArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setSelection(getLastClass(), true);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -121,6 +123,35 @@ public class home extends AppCompatActivity {
         if (disciplines.length() > 0) {
             initGoButton();
         }
+    }
+
+    protected int getLastClass() {
+        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+        int lastClass = 0;
+        try {
+            JSONObject last = new JSONObject(sharedPreferences.getString("localSettings", "{}"));
+            lastClass = last.getInt("lastClass");
+            Log.d("last", "class: " + lastClass);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return lastClass;
+    }
+
+    protected int getLastDiscipline() {
+        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+        int lastDiscipline = 0;
+        try {
+            JSONObject last = new JSONObject(sharedPreferences.getString("localSettings", "{}"));
+            lastDiscipline = last.getInt("lastDiscipline");
+            Log.d("last", "discipline: " + lastDiscipline);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return lastDiscipline;
     }
 
     protected void initGoButton() {

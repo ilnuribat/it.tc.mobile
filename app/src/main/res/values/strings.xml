@@ -9,4 +9,5 @@
     <string name="homePageTitle">Домашняя страница</string>
     <string name="chooseDiscipline">Выберите дисцпиплину</string>
     <string name="choseClass">Выберите класс</string>
+    <string name="markingBtnTitle">Отмечать</string>
 </resources>

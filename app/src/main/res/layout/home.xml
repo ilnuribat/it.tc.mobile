@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:weightSum="7">
+    android:weightSum="6">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:text="@string/homePageTitle"
         android:gravity="center"
         android:textSize="30sp"/>
@@ -55,5 +55,16 @@
             android:gravity="center_horizontal"
             android:layout_weight="1"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/goListPage"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+
+        android:text="@string/markingBtnTitle"
+        android:textSize="20sp" />
 
 </LinearLayout>

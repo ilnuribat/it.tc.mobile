@@ -34,6 +34,7 @@ public class home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        //start init of global variables
         try {
             disciplines = new JSONArray("[]");
             classes = new JSONArray("[]"); } catch (JSONException ignored) {}
@@ -45,9 +46,11 @@ public class home extends AppCompatActivity {
     }
 
     protected void initDisciplines() {
+        //This code will run after disciplines was got.
+        //init spinner, set listener
         Spinner spinner = (Spinner) findViewById(R.id.discpline);
         ArrayList<String> dists = new ArrayList<String>();
-        for(int i = 0; i < disciplines.length(); i ++) {
+        for (int i = 0; i < disciplines.length(); i ++) {
             try {
                 JSONObject oneDis = disciplines.getJSONObject(i);
                 String disStr = oneDis.getString("name");
@@ -86,9 +89,11 @@ public class home extends AppCompatActivity {
     }
 
     protected void initClasses() {
+        //This code will run after disciplines was got.
+        //init spinner, set listener
         Spinner spinner = (Spinner) findViewById(R.id.classes);
         ArrayList<String> classArray = new ArrayList<String>();
-        for(int i = 0; i < classes.length(); i ++) {
+        for (int i = 0; i < classes.length(); i ++) {
             try {
                 JSONObject oneClass = classes.getJSONObject(i);
                 String classStr = oneClass.getString("name");
@@ -140,6 +145,7 @@ public class home extends AppCompatActivity {
     }
 
     protected int getLastDiscipline() {
+        //Position in spinner
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
         int lastDiscipline = 0;
         try {
@@ -159,7 +165,9 @@ public class home extends AppCompatActivity {
         goListPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Context context = getApplicationContext();
+                Intent intent = new Intent(context, mark_page.class);
+                startActivityForResult(intent, 3);
             }
         });
     }
@@ -187,8 +195,7 @@ public class home extends AppCompatActivity {
     }
 
     protected void getClasses() {
-        String method = "/classes?";
-        new AsyncHttpGetClasses().execute("GET", method + "id_staff=" + getStaffID() + "&token=" + getToken());
+        new AsyncHttpGetClasses().execute("GET", "/classes?id_staff=" + getStaffID() + "&token=" + getToken());
     }
 
     class AsyncHttpGetClasses extends AsyncHttp {
@@ -273,7 +280,7 @@ public class home extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 
     @Override
@@ -281,5 +288,23 @@ public class home extends AppCompatActivity {
         super.onDestroy();
         Log.d(TAG, "________home: <<");
         //          presentation
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 3: {
+                String resultStr = data.getStringExtra("result");
+                if (resultStr.equals("home")) {
+                    Log.d(TAG, "Welcome from mark_page to Home!");
+                }
+                else if (resultStr.equals("goToStart"))
+                    goToStartPage();
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 }

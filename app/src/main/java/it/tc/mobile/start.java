@@ -57,9 +57,9 @@ public class start extends AppCompatActivity {
             byte messageDigest[] = digest.digest();
 
             // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++) {
-                String h = Integer.toHexString(0xFF & messageDigest[i]);
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
                 while (h.length() < 2)
                     h = "0" + h;
                 hexString.append(h);
@@ -114,7 +114,7 @@ public class start extends AppCompatActivity {
         editor.putString("position", position);
         editor.putString("token", token);
         editor.putInt("ID", ID);
-        editor.commit();
+        editor.apply();
 
         Intent intent = new Intent();
         intent.putExtra("result", "successLogin");

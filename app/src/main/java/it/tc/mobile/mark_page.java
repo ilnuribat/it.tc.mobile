@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,8 +16,10 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class mark_page extends AppCompatActivity {
     JSONObject listRes;
@@ -88,6 +94,23 @@ public class mark_page extends AppCompatActivity {
 
     protected void initListView() {
         Log.d("listResult", listRes.toString());
+        List<String> list = null;
+        ListView listView = (ListView) findViewById(R.id.listView);
+        try {
+            list = new ArrayList<String>(listRes.getJSONArray("data").length());
+            for (int i = 0; i < listRes.getJSONArray("data").length(); i++) {
+                String nameLastname = listRes.getJSONArray("data").getJSONObject(i).getString("nameLastname");
+                list.add(nameLastname);
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.raw_layout, R.id.nameLastname, list);
+            listView.setAdapter(arrayAdapter);
+        } catch (JSONException ignored) {}
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("listView", "clicked: " + position + ", id: " + id);
+            }
+        });
     }
 
     protected void goToStartPage() {

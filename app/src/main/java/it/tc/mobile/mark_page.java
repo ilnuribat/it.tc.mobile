@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -24,10 +23,9 @@ import java.util.Date;
 
 public class mark_page extends AppCompatActivity {
     JSONArray listOfRes;
-    ArrayList<String> list;
     int currentMarkType;
     int disciplineID;
-
+    JSONArray types;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,15 +34,15 @@ public class mark_page extends AppCompatActivity {
             listOfRes = new JSONArray("[]");
         } catch (JSONException ignored) {}
 
+        types = null;
         currentMarkType = -1;
-        list = null;
         getListOfRes();
         initRadioBtns();
     }
 
     protected void initRadioBtns() {
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
-        JSONArray types = null;
+
         try {
             JSONObject discJSON = new JSONObject(sharedPreferences.getString("localSettings", "{}"));
             //Тут хранится последний выбранный предмет
@@ -144,15 +142,17 @@ public class mark_page extends AppCompatActivity {
 
     protected void initListView() {
         final ListView listView = (ListView) findViewById(R.id.listView);
-        try {
-            list = new ArrayList<String>(listOfRes.length());
-            for (int i = 0; i < listOfRes.length(); i++) {
-                String nameLastname = listOfRes.getJSONObject(i).getString("nameLastname");
-                list.add(nameLastname);
-            }
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.raw_layout, R.id.nameLastname, list);
-            listView.setAdapter(arrayAdapter);
-        } catch (JSONException ignored) {}
+
+        ArrayList<ResItemMark> newList = new ArrayList<ResItemMark>(listOfRes.length());
+        for (int i = 0; i < listOfRes.length(); i++) {
+            try {
+                newList.add(new ResItemMark(listOfRes.getJSONObject(i)));
+            } catch (JSONException ignored) {}
+        }
+
+        markListAdapter newAdapter = new markListAdapter(getApplicationContext(), R.layout.raw_layout, newList, this.types);
+        listView.setAdapter(newAdapter);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

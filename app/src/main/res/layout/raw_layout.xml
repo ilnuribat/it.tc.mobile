@@ -7,17 +7,16 @@
         android:id="@+id/nameLastname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@+id/label"
         android:textSize="20sp"
-        >
+        android:textColor="#454545">
     </TextView>
     <TextView
         android:id="@+id/markID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2 text"
         android:textSize="20sp"
         android:layout_marginRight="20dp"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:textColor="#454545">
     </TextView>
 </RelativeLayout>

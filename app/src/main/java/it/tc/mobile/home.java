@@ -71,9 +71,9 @@ public class home extends AppCompatActivity {
                 //Сохраняем выбранный класс в настройках
                 try {
                     //вытаскиваем предыдущие сохраненные данные, поверх записываем новые
-                    JSONObject selectedClass = new JSONObject(lastSettings);
-                    selectedClass.put("lastDiscipline", position);
-                    moveToSharedPreferences("localSettings", selectedClass.toString());
+                    JSONObject selectedDiscipline = new JSONObject(lastSettings);
+                    selectedDiscipline.put("lastDiscipline", position);
+                    moveToSharedPreferences("localSettings", selectedDiscipline.toString());
                 } catch (JSONException ignored) {
                 }
             }

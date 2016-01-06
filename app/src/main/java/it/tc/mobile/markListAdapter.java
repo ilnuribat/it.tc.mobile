@@ -13,14 +13,14 @@ import org.json.JSONException;
 import java.util.List;
 
 /**
- * Created by itibatullin on 30.12.2015.
+ * Created by itibatullin on 30.12.2015
  */
-public class markListAdapter extends ArrayAdapter<ResItemMark> {
+public class MarkListAdapter extends ArrayAdapter<ResItemMark> {
     private List<ResItemMark> listOfRes;
     private Context context;
     private JSONArray typeOfMarks;
 
-    public markListAdapter(Context context, int resource, List<ResItemMark> objects, JSONArray typeOfMarks) {
+    public MarkListAdapter(Context context, int resource, List<ResItemMark> objects, JSONArray typeOfMarks) {
         super(context, resource, objects);
         this.typeOfMarks = typeOfMarks;
         this.context = context;
@@ -32,7 +32,7 @@ public class markListAdapter extends ArrayAdapter<ResItemMark> {
             try {
                 if (typeOfMarks.getJSONObject(i).getInt("id") == markID)
                     return typeOfMarks.getJSONObject(i).getString("shortName");
-            } catch (JSONException e) {}
+            } catch (JSONException ignored) {}
         }
         return "";
     }

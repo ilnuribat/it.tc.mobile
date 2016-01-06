@@ -32,7 +32,7 @@ public class ResItemMark {
     }
 
     public void setMarkID(int newMark) {
-        //Может тут делать запрос на добавление новой оценки
-        intentMark = newMark;
+        //sent mark to server, handling response.
+        markID = newMark;
     }
 }

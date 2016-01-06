@@ -73,7 +73,10 @@ public class mark_page extends AppCompatActivity {
                 }
             });
             typesBtns.addView(currentBtn);
+            if (i == 0)
+                currentBtn.setSelected(true);
         }
+
     }
 
     protected void getListOfRes() {
@@ -104,8 +107,7 @@ public class mark_page extends AppCompatActivity {
     protected String getDate() {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date today = Calendar.getInstance().getTime();
-        String dateStr = formatter.format(today);
-        return dateStr;
+        return formatter.format(today);
     }
 
     protected int getResId(int position, String resource) {
@@ -143,14 +145,15 @@ public class mark_page extends AppCompatActivity {
     protected void initListView() {
         final ListView listView = (ListView) findViewById(R.id.listView);
 
-        ArrayList<ResItemMark> newList = new ArrayList<ResItemMark>(listOfRes.length());
+        ArrayList<ResItemMark> newList;
+        newList = new ArrayList<>(listOfRes.length());
         for (int i = 0; i < listOfRes.length(); i++) {
             try {
                 newList.add(new ResItemMark(listOfRes.getJSONObject(i)));
             } catch (JSONException ignored) {}
         }
 
-        markListAdapter newAdapter = new markListAdapter(getApplicationContext(), R.layout.raw_layout, newList, this.types);
+        MarkListAdapter newAdapter = new MarkListAdapter(getApplicationContext(), R.layout.raw_layout, newList, this.types);
         listView.setAdapter(newAdapter);
 
 
@@ -187,7 +190,24 @@ public class mark_page extends AppCompatActivity {
         protected void onPostExecute(String result) {
             try {
                 JSONObject report = new JSONObject(result);
+                int resID = report.getInt("id_student");
+                int markID = report.getInt("id_mark");
                 Log.d("marking", result);
+
+                final ListView listView = (ListView) findViewById(R.id.listView);
+                MarkListAdapter markListAdapter = (MarkListAdapter) listView.getAdapter();
+                int position = markListAdapter.findPositionByID(resID);
+                ResItemMark currentRes = markListAdapter.getItem(position);
+                currentRes.setMarkID(markID);
+
+
+                int first = listView.getFirstVisiblePosition();
+                int last = listView.getLastVisiblePosition();
+                if (position >= first && position <= last) {
+                    View curRes = listView.getChildAt(position - first);
+                    markListAdapter.getView(position, curRes, listView);
+                }
+
             } catch (JSONException e) {
                 e.getStackTrace();
             }

@@ -1,5 +1,6 @@
 package it.tc.mobile;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,13 +24,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by itibatullin on 23.11.2015.
- */
+import it.tc.mobile.helpers.DatePickerFragment;
+
 public class home extends AppCompatActivity {
 
     JSONArray disciplines;
     JSONArray classes;
+    String choosenDate;
+
     protected String TAG = "LIFECYCLE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,28 @@ public class home extends AppCompatActivity {
 
         getDisciplines();
         getClasses();
+        initDatePicker();
         Log.d(TAG, "________home: >>");
+    }
+
+    protected void initDatePicker() {
+        final TextView datePickerButton = (TextView) findViewById(R.id.datePickerButton);
+        datePickerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = new DatePickerFragment() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        choosenDate = "" + month + "-" + day + "-" + year;
+                        System.out.println(choosenDate);
+                        moveToSharedPreferences("date", choosenDate);
+                        datePickerButton.setText(choosenDate);
+                    }
+                };
+                newFragment.show(getFragmentManager(), "DatePicker");
+            }
+        });
+
     }
 
     protected void initDisciplines() {

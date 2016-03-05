@@ -5,13 +5,12 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 
 /**
- * Created by itibatullin on 20.11.2015.
+ * Created by itibatullin on 20.11.2015
  */
 class AsyncHttp extends AsyncTask<String, Void, String> {
     @Override
@@ -37,7 +36,6 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
     // a string.
     private String downloadUrlPOST(String myurl, String data) {
         InputStream is = null;
-        int len = 500;
         HttpURLConnection conn = null;
         try {
             URL url = new URL(myurl);
@@ -56,7 +54,6 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
             conn.getOutputStream().write(postData);
             // Starts the query
             conn.connect();
-            int response = conn.getResponseCode();
             is = conn.getInputStream();
 
             // Convert the InputStream into a string
@@ -66,8 +63,8 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
             // finished using it.
         }
         catch (IOException e) {
-            assert ((HttpURLConnection) conn) != null;
-            is = ((HttpURLConnection) conn).getErrorStream();
+            assert conn != null;
+            is = conn.getErrorStream();
             try {
                 return IOUtils.toString(is, "UTF-8");
             } catch (IOException e1) {
@@ -105,7 +102,6 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
             //conn.setDoInput(true);
             // Starts the query
             conn.connect();
-            int response = conn.getResponseCode();
             is = conn.getInputStream();
 
             // Convert the InputStream into a string
@@ -114,8 +110,8 @@ class AsyncHttp extends AsyncTask<String, Void, String> {
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
         } catch (IOException e) {
-            assert ((HttpURLConnection) conn) != null;
-            is = ((HttpURLConnection) conn).getErrorStream();
+            assert conn != null;
+            is = conn.getErrorStream();
             try {
                 return IOUtils.toString(is, "UTF-8");
             } catch (IOException e1) {

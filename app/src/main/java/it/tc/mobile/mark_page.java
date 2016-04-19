@@ -1,5 +1,6 @@
 package it.tc.mobile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,22 +11,22 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class mark_page extends AppCompatActivity {
     JSONArray listOfRes;
     int currentMarkType;
     int disciplineID;
+    int id_staff;
+    int classID;
     JSONArray types;
+    String token, date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +35,31 @@ public class mark_page extends AppCompatActivity {
             listOfRes = new JSONArray("[]");
         } catch (JSONException ignored) {}
 
-        types = null;
-        currentMarkType = -1;
+        getSettings();
         getListOfRes();
         initRadioBtns();
+    }
+
+    protected void getSettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+        token = sharedPreferences.getString("token", "");
+        date = sharedPreferences.getString("date", "");
+        id_staff = sharedPreferences.getInt("ID", -1);
+        if (token.equals("") || id_staff == -1)
+            goToStartPage();
+        types = null;
+        currentMarkType = -1;
+
+        int disPos = 0, classPos = 0;
+
+        try {
+            JSONObject localSettings = new JSONObject(sharedPreferences.getString("localSettings", "{}"));
+            disPos = localSettings.getInt("lastDiscipline");
+            classPos = localSettings.getInt("lastClass");
+
+        } catch (JSONException ignored) {}
+        disciplineID = getResId(disPos, "disciplines");
+        classID = getResId(classPos, "classes");
     }
 
     protected void initRadioBtns() {
@@ -81,33 +103,8 @@ public class mark_page extends AppCompatActivity {
 
     protected void getListOfRes() {
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", "");
-        int id_staff = sharedPreferences.getInt("ID", -1);
-        if (token.equals("") || id_staff == -1)
-            goToStartPage();
-
-
-        int disPos = 0, classPos = 0;
-        try {
-            JSONObject localSettings = new JSONObject(sharedPreferences.getString("localSettings", "{}"));
-            disPos = localSettings.getInt("lastDiscipline");
-            classPos = localSettings.getInt("lastClass");
-        } catch (JSONException ignored) {}
-
-        disciplineID = getResId(disPos, "disciplines");
-        int classID = getResId(classPos, "classes");
-
-        String dateStr = getDate();
-
-        String query = "/marks?id_staff=" + id_staff + "&token=" + token + "&class=" + classID + "&id_discipline=" + disciplineID + "&date=" + dateStr;
-
+        String query = "/marks?id_staff=" + id_staff + "&token=" + token + "&class=" + classID + "&id_discipline=" + disciplineID + "&date=" + date;
         new AsyncGetListOfRes().execute("GET", query);
-    }
-
-    protected String getDate() {
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date today = Calendar.getInstance().getTime();
-        return formatter.format(today);
     }
 
     protected int getResId(int position, String resource) {
@@ -134,6 +131,7 @@ public class mark_page extends AppCompatActivity {
             try {
                 JSONObject listRes = new JSONObject(result);
                 listOfRes = listRes.getJSONArray("data");
+                System.out.println(result);
                 initListView();
             } catch (JSONException e) {
                 e.getStackTrace();
@@ -171,15 +169,14 @@ public class mark_page extends AppCompatActivity {
     }
 
     protected void sendMark(int resID) {
-        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", "");
-        int id_staff = sharedPreferences.getInt("ID", -1);
-        String date = getDate();
-        //disciplineID
-        //resID
-        if(currentMarkType == -1)
+        if(currentMarkType == -1) {
             //Если не выбрал оценку, то не отправлять оценку
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, "Выберите оценку", duration);
+            toast.show();
             return;
+        }
 
         String query = "&token=" + token + "&id_staff=" + id_staff + "&discipline=" + disciplineID + "&id_object=" + resID + "&mark=" + currentMarkType + "&date=" + date;
         new AsyncSendMark().execute("POST", "/mark", query);

@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import it.tc.mobile.helpers.DatePickerFragment;
 
@@ -51,22 +52,43 @@ public class home extends AppCompatActivity {
 
     protected void initDatePicker() {
         final TextView datePickerButton = (TextView) findViewById(R.id.datePickerButton);
+        Calendar calendar = Calendar.getInstance();
+        int day, month, year;
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        month = calendar.get(Calendar.MONTH);
+        year = calendar.get(Calendar.YEAR);
+
+        moveToSharedPreferences("date", myDateFormat(day, month, year, "MySQL"));
+        datePickerButton.setText(myDateFormat(day, month, year, "human"));
         datePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new DatePickerFragment() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
-                        choosenDate = "" + month + "-" + day + "-" + year;
-                        System.out.println(choosenDate);
-                        moveToSharedPreferences("date", choosenDate);
-                        datePickerButton.setText(choosenDate);
+
+                        moveToSharedPreferences("date", myDateFormat(day, month, year, "MySQL"));
+                        datePickerButton.setText(myDateFormat(day, month, year, "human"));
                     }
                 };
                 newFragment.show(getFragmentManager(), "DatePicker");
             }
         });
 
+    }
+
+    public String myDateFormat(int day, int month, int year, String type) {
+        //month is starting with 0.
+        month ++;
+        String dayStr = (day < 10 ? "0" : "") + day;
+        String monthStr = (month < 10 ? "0" : "") + month;
+        if (type.equals("human")) {
+            return dayStr + "." + monthStr + "." + year;
+        }
+        if (type.equals("MySQL")) {
+            return year+ "-" + monthStr + "-" + dayStr ;
+        }
+        return "";
     }
 
     protected void initDisciplines() {

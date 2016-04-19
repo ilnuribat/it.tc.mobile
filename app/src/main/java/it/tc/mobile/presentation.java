@@ -82,34 +82,4 @@ public class presentation extends AppCompatActivity {
     }
 
     protected String TAG = "LIFECYCLE";
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "presentaion: >> >>");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "presentaion: >> >> >>");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "presentaion: << << <<");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "presentaion: << <<");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "presentaion: <<");
-    }
 }

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:weightSum="6">
+    android:weightSum="7">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,8 +52,32 @@
             android:id="@+id/classes"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:gravity="center|right"
             android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/chooseDate"
+            android:gravity="center|start"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/datePickerButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:clickable="true"
+            android:gravity="center|right"
+            android:layout_weight="1"/>
+
     </LinearLayout>
 
     <Button
